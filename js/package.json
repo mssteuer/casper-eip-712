@@ -1,0 +1,14 @@
+{
+  "name": "casper-eip-712",
+  "version": "0.1.0",
+  "description": "EIP-712 style typed data hashing for Casper Network (TypeScript)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "keywords": ["casper", "eip-712", "blockchain", "cryptography"],
+  "license": "Apache-2.0"
+}

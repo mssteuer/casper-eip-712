@@ -1,0 +1,19 @@
+[package]
+name = "casper-eip-712"
+version = "0.1.0"
+edition = "2021"
+description = "EIP-712 style typed data hashing and domain separation for Casper Network"
+license = "Apache-2.0"
+repository = "https://github.com/make-software/casper-eip-712"
+keywords = ["casper", "eip-712", "blockchain", "cryptography", "domain-separation"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+sha3 = { version = "0.10", default-features = false }
+
+[dev-dependencies]
+hex = "0.4"
+
+[features]
+default = ["std"]
+std = ["sha3/std"]
