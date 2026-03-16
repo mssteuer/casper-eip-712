@@ -77,12 +77,20 @@ export function encodeBool(value: boolean): Uint8Array {
 /**
  * Encode a single typed field value per EIP-712 rules.
  */
+function assertIntegerLikeValue(type: string, value: unknown): asserts value is string | bigint | number {
+  if (typeof value === "string" || typeof value === "bigint" || typeof value === "number") {
+    return;
+  }
+  throw new Error(`${type} value must be a string, bigint, or number`);
+}
+
 export function encodeField(type: string, value: unknown): Uint8Array {
   switch (type) {
     case "address":
       return encodeAddress(String(value));
     case "uint256":
-      return encodeUint256(value as string | bigint);
+      assertIntegerLikeValue(type, value);
+      return encodeUint256(value);
     case "bytes32":
       return encodeBytes32(String(value));
     case "string":
@@ -93,7 +101,8 @@ export function encodeField(type: string, value: unknown): Uint8Array {
       return encodeBool(Boolean(value));
     default:
       if (type.startsWith("uint") || type.startsWith("int")) {
-        return encodeUint256(value as string | bigint);
+        assertIntegerLikeValue(type, value);
+        return encodeUint256(value);
       }
       throw new Error(`Unsupported EIP-712 type: ${type}`);
   }

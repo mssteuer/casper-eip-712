@@ -67,6 +67,9 @@ describe("cross-language vectors", () => {
   for (const vector of vectors) {
     describe(vector.name, () => {
       const types = typeDefinitions[vector.primaryType];
+      if (!types) {
+        throw new Error(`Missing type definitions for primaryType \"${vector.primaryType}\" in cross-language test vectors`);
+      }
       const domainTypes = getDomainTypes(vector);
 
       it("domain separator matches", () => {
