@@ -1,6 +1,6 @@
 {
   "generatedBy": "ethers.TypedDataEncoder.hash",
-  "generatedAt": "2026-03-16T01:51:12.803Z",
+  "generatedAt": "2026-03-16T01:55:44.739Z",
   "vectors": [
     {
       "name": "permit_basic",
@@ -21,6 +21,98 @@
       "domainSeparator": "0x98a000c59add584118697238deb65a508461c73c65bc49956fb97bfc568c30c8",
       "structHash": "0x2feca5389c256a1ed1a2562e50b5aa9eec5ae8008a2f365726ca552672a7a8f1",
       "digest": "0x647e5fecd3e0bae728bc3dae848eb34ca05f7972aec3274ba0b9388b123d1ba2"
+    },
+    {
+      "name": "approval_basic",
+      "primaryType": "Approval",
+      "domain": {
+        "name": "MyToken",
+        "version": "1",
+        "chainId": 1,
+        "verifyingContract": "0x1111111111111111111111111111111111111111"
+      },
+      "message": {
+        "owner": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "spender": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "value": "0x0000000000000000000000000000000000000000000000000000000000001234"
+      },
+      "domainSeparator": "0x98a000c59add584118697238deb65a508461c73c65bc49956fb97bfc568c30c8",
+      "structHash": "0xd918dfeea23ea023061f1ef4f5b02880a9a9c05368e2f7767362707a8a42bfbe",
+      "digest": "0xd502b90a06968099a28fc5ba6bf88229e520e10df1a3c8ff9ee491be08860843"
+    },
+    {
+      "name": "transfer_basic",
+      "primaryType": "Transfer",
+      "domain": {
+        "name": "MyToken",
+        "version": "1",
+        "chainId": 1,
+        "verifyingContract": "0x1111111111111111111111111111111111111111"
+      },
+      "message": {
+        "from": "0x1234567890abcdef1234567890abcdef12345678",
+        "to": "0x876543210fedcba9876543210fedcba987654321",
+        "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "domainSeparator": "0x98a000c59add584118697238deb65a508461c73c65bc49956fb97bfc568c30c8",
+      "structHash": "0x75e9118f41a7ae89a89c88fe6701da973fec5cf60529ccdf0c706495be2f16e5",
+      "digest": "0x6fc0796fa7d7b4b4c21e7aac8ce67d0ee4c7b6b747720f84b1d92c444dc5b90d"
+    },
+    {
+      "name": "permit_partial_domain",
+      "primaryType": "Permit",
+      "domain": {
+        "name": "MyToken",
+        "version": "1"
+      },
+      "message": {
+        "owner": "0x9999999999999999999999999999999999999999",
+        "spender": "0x8888888888888888888888888888888888888888",
+        "value": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "nonce": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "deadline": "0x0000000000000000000000000000000000000000000000000000000000000002"
+      },
+      "domainSeparator": "0x87f1bf2ff60146d622e20172664a2e37fe378951779d41163fa8afe6c8dea56c",
+      "structHash": "0xe0c8ba9cfb01b9d112bdbe7b4fc139c003ac282f00c5c2bbe007e3498afa3a67",
+      "digest": "0x3edf425ca2303b2d4fbd74529751615f45a2140ee57d51afc3fd684f29df12a7"
+    },
+    {
+      "name": "casper_native_domain_permit",
+      "primaryType": "Permit",
+      "domain": {
+        "name": "CasperToken",
+        "version": "1",
+        "chain_name": "casper-test",
+        "contract_package_hash": "0x7777777777777777777777777777777777777777777777777777777777777777"
+      },
+      "message": {
+        "owner": "0x0101010101010101010101010101010101010101",
+        "spender": "0x0202020202020202020202020202020202020202",
+        "value": "0x000000000000000000000000000000000000000000000000000000000000002a",
+        "nonce": "0x0000000000000000000000000000000000000000000000000000000000000007",
+        "deadline": "0x00000000000000000000000000000000000000000000000000000000000003e8"
+      },
+      "domainSeparator": "0xb277bd5cc55f7517eaa22010c78cd3e74387ded279c8e3f8f29cc5ea31f2a402",
+      "structHash": "0xc30ab2a82f3cd23da374d5dd2f26ae31ef36845f85443fe1bd7bce19c93bfd5f",
+      "digest": "0x86926c343a57cc86b90dd7bdd073a9d34193876cea31c082c3aaa2e64245fbfa"
+    },
+    {
+      "name": "approval_zero_value_edge",
+      "primaryType": "Approval",
+      "domain": {
+        "name": "EdgeToken",
+        "version": "9",
+        "chainId": 42,
+        "verifyingContract": "0x0000000000000000000000000000000000000001"
+      },
+      "message": {
+        "owner": "0x0000000000000000000000000000000000000000",
+        "spender": "0xffffffffffffffffffffffffffffffffffffffff",
+        "value": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "domainSeparator": "0xc5dd138840c9720804c795a98e76b5fe958225f40d0b0ddcb9aca43623525657",
+      "structHash": "0x5e318dcc0ffbf49e946d69d7575ef834f4d53bc1c3c260431acf0522e41ae732",
+      "digest": "0x8b81acf0287a023c651f2a7541e8df36856f9f5638433757486097ca1591183a"
     }
   ]
 }

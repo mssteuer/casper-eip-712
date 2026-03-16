@@ -5,7 +5,7 @@
     "generate": "node generate-vectors.ts"
   },
   "dependencies": {
-    "ethers": "^6.0.0",
+    "ethers": "^6.16.0",
     "typescript": "^5.0.0"
   }
 }

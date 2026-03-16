@@ -10,7 +10,9 @@ pub trait Eip712Struct {
     fn type_string() -> &'static str;
 
     /// keccak256 of the canonical type string.
-    fn type_hash() -> [u8; 32];
+    fn type_hash() -> [u8; 32] {
+        keccak256(Self::type_string().as_bytes())
+    }
 
     /// ABI-encode the struct fields (without the type hash prefix).
     fn encode_data(&self) -> Vec<u8>;

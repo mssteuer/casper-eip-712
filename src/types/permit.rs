@@ -1,9 +1,6 @@
-extern crate alloc;
-
 use alloc::vec::Vec;
 
 use crate::encoding::{encode_address, encode_uint256};
-use crate::keccak::keccak256;
 use crate::traits::Eip712Struct;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -20,10 +17,6 @@ impl Eip712Struct for Permit {
         "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
     }
 
-    fn type_hash() -> [u8; 32] {
-        keccak256(Self::type_string().as_bytes())
-    }
-
     fn encode_data(&self) -> Vec<u8> {
         let mut data = Vec::with_capacity(160);
         data.extend_from_slice(&encode_address(self.owner));
@@ -38,6 +31,7 @@ impl Eip712Struct for Permit {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::keccak::keccak256;
     use crate::traits::Eip712Struct;
 
     #[test]
