@@ -1,0 +1,11 @@
+{
+  "name": "casper-eip-712-test-vectors",
+  "private": true,
+  "scripts": {
+    "generate": "node generate-vectors.ts"
+  },
+  "dependencies": {
+    "ethers": "^6.0.0",
+    "typescript": "^5.0.0"
+  }
+}
