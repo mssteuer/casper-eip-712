@@ -9,7 +9,7 @@ use odra::casper_types::{account::AccountHash, bytesrepr::Bytes, U256};
 use odra::prelude::*;
 use odra_modules::cep18_token::Cep18;
 
-const CHAIN_ID_CASPER_ASCII: u64 = 1_314_614_895;
+pub const CHAIN_ID_CASPER_ASCII: u64 = 1_314_614_895;
 
 #[derive(PartialEq, Eq, Debug)]
 #[odra::odra_error]
@@ -63,6 +63,7 @@ impl PermitToken {
     pub fn allowance(&self, owner: &Address, spender: &Address) -> U256 {
         let permit = self.permit_allowances.get(&(*owner, *spender)).unwrap_or_default();
         if permit > U256::zero() {
+            // Permit-set allowances override CEP-18 approvals so off-chain signatures remain authoritative.
             permit
         } else {
             self.token.allowance(owner, spender)
@@ -191,6 +192,7 @@ impl PermitToken {
     fn contract_address_bytes(&self) -> [u8; 20] {
         let full = self.contract_package_hash_bytes();
         let mut addr = [0u8; 20];
+        // EIP-712 expects an address-sized verifying contract, so the demo uses the leading 20 bytes.
         addr.copy_from_slice(&full[..20]);
         addr
     }

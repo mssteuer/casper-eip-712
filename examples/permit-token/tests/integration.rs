@@ -3,14 +3,13 @@ use k256::ecdsa::{signature::hazmat::PrehashSigner, SigningKey};
 use odra::casper_types::{bytesrepr::Bytes, U256};
 use odra::host::{Deployer, HostEnv};
 use odra::prelude::{Address, Addressable};
-use permit_token::permit_token::{address_to_eth_bytes, u256_to_bytes32, PermitToken, PermitTokenHostRef, PermitTokenInitArgs};
+use permit_token::permit_token::{address_to_eth_bytes, u256_to_bytes32, PermitToken, PermitTokenHostRef, PermitTokenInitArgs, CHAIN_ID_CASPER_ASCII};
 
 const TOKEN_NAME: &str = "PermitToken";
 const TOKEN_SYMBOL: &str = "PTK";
 const TOKEN_DECIMALS: u8 = 18;
 const INITIAL_SUPPLY: u64 = 1_000_000;
 const DOMAIN_VERSION: &str = "1";
-const CHAIN_ID_CASPER_ASCII: u64 = 1_314_614_895;
 
 fn setup() -> (HostEnv, PermitTokenHostRef) {
     let env = odra_test::env();

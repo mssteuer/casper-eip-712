@@ -29,7 +29,7 @@ const spender = `0x${"cc".repeat(20)}`;
 const evmDomain: EIP712Domain = {
   name: TOKEN_NAME,
   version: DOMAIN_VERSION,
-  chainId: 131614895,
+  chainId: 1314614895,
   verifyingContract: CONTRACT_ADDR,
 };
 
