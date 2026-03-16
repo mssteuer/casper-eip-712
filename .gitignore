@@ -3,3 +3,6 @@ node_modules/
 Cargo.lock
 .DS_Store
 *.swp
+
+js/dist/
+js/node_modules/
