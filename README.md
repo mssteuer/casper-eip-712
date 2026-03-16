@@ -34,6 +34,70 @@ let digest = hash_typed_data(&domain, &permit);
 assert_eq!(digest.len(), 32);
 ```
 
+## Getting Started
+
+### Prerequisites
+
+- Rust (nightly recommended — see `rust-toolchain.toml`)
+- Node.js 18+ (for the TypeScript package and demo)
+- npm
+
+### Build the Rust crate
+
+```bash
+cargo build
+cargo test
+```
+
+### Build the TypeScript companion
+
+```bash
+cd js
+npm install
+npm run build
+npm test
+```
+
+### Run the demo
+
+The demo showcases a CEP-18 token with gasless permit/approve using EIP-712 signatures. It runs locally without a Casper node.
+
+```bash
+# 1. Build the TypeScript package first (the demo depends on it)
+cd js && npm install && npm run build && cd ..
+
+# 2. Install and run the demo
+cd examples/permit-token/demo
+npm install
+npx tsx demo.ts
+```
+
+### Run the Rust integration tests (Odra)
+
+```bash
+cd examples/permit-token
+cargo odra test
+```
+
+> **Note:** `casper-client` is pinned to 5.0.0 in the lock file. Version 5.0.1 introduced
+> breaking API changes that are incompatible with Odra 2.5.0. If you regenerate the lock file,
+> run `cargo update casper-client --precise 5.0.0` to re-pin.
+
+## Repository Structure
+
+```
+src/                    — Core Rust crate (no_std, EIP-712 encoding + hashing)
+js/                     — TypeScript companion package (@casper-ecosystem/casper-eip-712)
+  src/                  — TypeScript source
+  dist/                 — Built output (run npm run build)
+examples/
+  permit-token/         — Demo contract: CEP-18 with permit/approve pattern
+    src/                — Odra smart contract (Rust)
+    tests/              — Rust integration tests
+    demo/               — Standalone TypeScript demo
+scripts/                — Test vector generation
+```
+
 ## Custom struct example
 
 ```rust
