@@ -5,6 +5,7 @@
 //! ```
 
 pub use crate::domain::{DomainBuilder, DomainFieldValue, DomainSeparator};
+pub use crate::encoding::*;
 pub use crate::hash::hash_typed_data;
 pub use crate::keccak::keccak256;
 pub use crate::traits::Eip712Struct;

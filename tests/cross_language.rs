@@ -52,6 +52,9 @@ fn build_domain(domain: &Value) -> DomainSeparator {
     if let Some(salt) = domain.get("salt").and_then(Value::as_str) {
         builder = builder.salt(parse_hex_array::<32>(salt));
     }
+    // This test helper only wires the custom domain fields covered by the current
+    // committed vectors. If future vectors add new custom domain fields, extend this
+    // mapping so they are not silently ignored by the builder.
     if let Some(chain_name) = domain.get("chain_name").and_then(Value::as_str) {
         builder = builder.custom_field("chain_name", DomainFieldValue::String(chain_name.into()));
     }

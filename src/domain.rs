@@ -8,6 +8,8 @@ use crate::keccak::keccak256;
 pub enum DomainFieldValue {
     String(String),
     Uint256([u8; 32]),
+    /// Encoded as an EIP-712 uint256 so smaller Rust integers match the canonical
+    /// 32-byte word representation used in the domain type string and hash.
     Uint64(u64),
     Address([u8; 20]),
     Bytes32([u8; 32]),

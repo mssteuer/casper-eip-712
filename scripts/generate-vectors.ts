@@ -35,6 +35,8 @@ function encodeFieldValue(fieldType: string, value: unknown): string {
       return zeroPadValue((value ? "0x01" : "0x00"), 32);
     case "uint256":
     case "bytes32":
+      // Both uint256 and bytes32 are ABI-encoded as a single 32-byte word here.
+      // Keep shorter bytes32 fixtures left-padded to 32 bytes when adding vectors.
       return zeroPadValue(String(value), 32);
     default:
       throw new Error(`unsupported field type ${fieldType}`);
