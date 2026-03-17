@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 500px;
+    background: #0d0d1a;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #e8e8f0;
+    overflow: hidden;
+  }
+  .title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #e8e8f0;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #777790;
+    margin-bottom: 36px;
+  }
+  .columns {
+    display: flex;
+    align-items: flex-start;
+    gap: 36px;
+  }
+  .card {
+    width: 460px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-evm .card-header {
+    background: rgba(98, 126, 234, 0.15);
+    color: #8C9EFF;
+    border-bottom: 1px solid rgba(98, 126, 234, 0.2);
+  }
+  .card-casper .card-header {
+    background: rgba(255, 71, 62, 0.12);
+    color: #FF473E;
+    border-bottom: 1px solid rgba(255, 71, 62, 0.2);
+  }
+  .card-body {
+    background: #1a1a2e;
+    padding: 20px 24px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13.5px;
+    line-height: 1.9;
+    border: 1px solid #2a2a40;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+  .card-evm .card-body { border-color: rgba(98, 126, 234, 0.2); }
+  .card-casper .card-body { border-color: rgba(255, 71, 62, 0.2); }
+  .type-name { color: #c792ea; font-weight: 600; }
+  .field { color: #8C9EFF; }
+  .field-casper { color: #FF8A80; }
+  .value { color: #C3E88D; }
+  .string-val { color: #FFCB6B; }
+  .brace { color: #555570; }
+  .comment { color: #546E7A; font-style: italic; font-size: 12px; }
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-top: 50px;
+  }
+  .equals {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #333350;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #00C878;
+    font-weight: 700;
+  }
+  .conn-label {
+    font-size: 10px;
+    color: #666680;
+    text-align: center;
+    line-height: 1.3;
+    max-width: 80px;
+  }
+  .footer-label {
+    font-size: 11px;
+    color: #666680;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+  <div class="title">Same Standard, Extended for Casper</div>
+  <div class="subtitle">DomainBuilder supports both EVM-compatible and Casper-native domains</div>
+  <div class="columns">
+    <div class="card card-evm">
+      <div class="card-header">
+        <span>⟠</span> EVM Domain
+      </div>
+      <div class="card-body">
+        <span class="type-name">EIP712Domain</span> <span class="brace">{</span><br>
+        &nbsp;&nbsp;<span class="field">name</span>: <span class="string-val">"CasperBridge"</span><br>
+        &nbsp;&nbsp;<span class="field">version</span>: <span class="string-val">"1"</span><br>
+        &nbsp;&nbsp;<span class="field">chainId</span>: <span class="value">11155111</span><br>
+        &nbsp;&nbsp;<span class="field">verifyingContract</span>: <span class="value">0xAb5801a7...</span><br>
+        <span class="brace">}</span>
+        <div class="footer-label">Ethereum / EVM chains</div>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="equals">=</div>
+      <div class="conn-label">Same typed-data signing</div>
+    </div>
+
+    <div class="card card-casper">
+      <div class="card-header">
+        <span style="color: #FF473E;">◆</span> Casper-Native Domain
+      </div>
+      <div class="card-body">
+        <span class="comment">// EIP-712 structure, Casper-native fields</span><br>
+        <span class="type-name">EIP712Domain</span> <span class="brace">{</span><br>
+        &nbsp;&nbsp;<span class="field-casper">name</span>: <span class="string-val">"CasperBridge"</span><br>
+        &nbsp;&nbsp;<span class="field-casper">version</span>: <span class="string-val">"1"</span><br>
+        &nbsp;&nbsp;<span class="field-casper">chain_name</span>: <span class="string-val">"casper-test"</span><br>
+        &nbsp;&nbsp;<span class="field-casper">contract_package_hash</span>: <span class="value">99ab...ef</span><br>
+        <span class="brace">}</span>
+        <div class="footer-label">Casper Network</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
