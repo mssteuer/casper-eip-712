@@ -1,6 +1,6 @@
 import type { TypeDefinitions } from "../types.js";
 
-export interface PermitMessage {
+export interface PermitMessage extends Record<string, unknown> {
   owner: string;
   spender: string;
   value: string | bigint;

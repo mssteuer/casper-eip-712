@@ -1,6 +1,6 @@
 import type { TypeDefinitions } from "../types.js";
 
-export interface TransferMessage {
+export interface TransferMessage extends Record<string, unknown> {
   from: string;
   to: string;
   value: string | bigint;
