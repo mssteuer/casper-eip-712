@@ -105,7 +105,7 @@ use alloc::vec::Vec;
 use casper_eip_712::prelude::*;
 
 struct Attestation {
-    subject: [u8; 20],
+    subject: Address,
     claim_hash: [u8; 32],
 }
 

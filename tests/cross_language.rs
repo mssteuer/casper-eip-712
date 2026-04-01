@@ -28,6 +28,16 @@ fn parse_hex_array<const N: usize>(value: &str) -> [u8; N] {
     array
 }
 
+fn parse_address(value: &str) -> Address {
+    let trimmed = value.strip_prefix("0x").unwrap_or(value);
+    let bytes = <Vec<u8>>::from_hex(trimmed).expect("valid hex address");
+    match bytes.len() {
+        20 => Address::Eth(bytes.try_into().unwrap()),
+        33 => Address::Casper(bytes.try_into().unwrap()),
+        n => panic!("unexpected address byte length {n} for value {value}"),
+    }
+}
+
 fn get_str<'a>(value: &'a Value, field: &str) -> &'a str {
     value.get(field)
         .and_then(Value::as_str)
@@ -79,8 +89,8 @@ fn vectors_match_ethers_reference_values() {
         let actual_struct_hash = match vector.primary_type.as_str() {
             "Permit" => {
                 let permit = Permit {
-                    owner: parse_hex_array::<20>(get_str(&vector.message, "owner")),
-                    spender: parse_hex_array::<20>(get_str(&vector.message, "spender")),
+                    owner: parse_address(get_str(&vector.message, "owner")),
+                    spender: parse_address(get_str(&vector.message, "spender")),
                     value: parse_hex_array::<32>(get_str(&vector.message, "value")),
                     nonce: parse_hex_array::<32>(get_str(&vector.message, "nonce")),
                     deadline: parse_hex_array::<32>(get_str(&vector.message, "deadline")),
@@ -97,8 +107,8 @@ fn vectors_match_ethers_reference_values() {
             }
             "Approval" => {
                 let approval = Approval {
-                    owner: parse_hex_array::<20>(get_str(&vector.message, "owner")),
-                    spender: parse_hex_array::<20>(get_str(&vector.message, "spender")),
+                    owner: parse_address(get_str(&vector.message, "owner")),
+                    spender: parse_address(get_str(&vector.message, "spender")),
                     value: parse_hex_array::<32>(get_str(&vector.message, "value")),
                 };
 
@@ -113,8 +123,8 @@ fn vectors_match_ethers_reference_values() {
             }
             "Transfer" => {
                 let transfer = Transfer {
-                    from: parse_hex_array::<20>(get_str(&vector.message, "from")),
-                    to: parse_hex_array::<20>(get_str(&vector.message, "to")),
+                    from: parse_address(get_str(&vector.message, "from")),
+                    to: parse_address(get_str(&vector.message, "to")),
                     value: parse_hex_array::<32>(get_str(&vector.message, "value")),
                 };
 

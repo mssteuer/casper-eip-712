@@ -1,6 +1,6 @@
 {
   "generatedBy": "ethers.TypedDataEncoder.hash",
-  "generatedAt": "2026-03-16T04:39:16.969Z",
+  "generatedAt": "2026-04-01T07:58:19.648Z",
   "vectors": [
     {
       "name": "permit_basic",
@@ -95,6 +95,26 @@
       "domainSeparator": "0xb277bd5cc55f7517eaa22010c78cd3e74387ded279c8e3f8f29cc5ea31f2a402",
       "structHash": "0xc30ab2a82f3cd23da374d5dd2f26ae31ef36845f85443fe1bd7bce19c93bfd5f",
       "digest": "0x86926c343a57cc86b90dd7bdd073a9d34193876cea31c082c3aaa2e64245fbfa"
+    },
+    {
+      "name": "casper_address_permit",
+      "primaryType": "Permit",
+      "domain": {
+        "name": "CasperToken",
+        "version": "1",
+        "chain_name": "casper-test",
+        "contract_package_hash": "0x7777777777777777777777777777777777777777777777777777777777777777"
+      },
+      "message": {
+        "owner": "0x00abababababababababababababababababababababababababababababababab",
+        "spender": "0x01cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+        "value": "0x000000000000000000000000000000000000000000000000000000000000002a",
+        "nonce": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "deadline": "0x000000000000000000000000000000000000000000000000000000006666ffff"
+      },
+      "domainSeparator": "0xb277bd5cc55f7517eaa22010c78cd3e74387ded279c8e3f8f29cc5ea31f2a402",
+      "structHash": "0x3c9d714e753e49ba21597b4edd127090a9372023a4e5f2d79972af3b01c24535",
+      "digest": "0x2f870a4c5ac07483c1c9beae4fc1e0f2e3b01cacb9b60fb19a18b28fd0d5eade"
     },
     {
       "name": "approval_zero_value_edge",

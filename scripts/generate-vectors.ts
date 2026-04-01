@@ -29,8 +29,13 @@ function encodeFieldValue(fieldType: string, value: unknown): string {
       return keccak256(toUtf8Bytes(String(value)));
     case "bytes":
       return keccak256(getBytes(String(value)));
-    case "address":
+    case "address": {
+      const addrBytes = getBytes(String(value));
+      if (addrBytes.length === 33) {
+        return keccak256(addrBytes);
+      }
       return zeroPadValue(String(value), 32);
+    }
     case "bool":
       return zeroPadValue((value ? "0x01" : "0x00"), 32);
     case "uint256":
@@ -206,6 +211,33 @@ const vectors: Vector[] = [
       value: "0x000000000000000000000000000000000000000000000000000000000000002a",
       nonce: "0x0000000000000000000000000000000000000000000000000000000000000007",
       deadline: "0x00000000000000000000000000000000000000000000000000000000000003e8",
+    },
+  ),
+  customDomainVector(
+    "casper_address_permit",
+    "Permit",
+    {
+      name: "CasperToken",
+      version: "1",
+      chain_name: "casper-test",
+      contract_package_hash:
+        "0x7777777777777777777777777777777777777777777777777777777777777777",
+    },
+    [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chain_name", type: "string" },
+      { name: "contract_package_hash", type: "bytes32" },
+    ],
+    permitFields,
+    {
+      // AccountHash: 0x00 prefix + 32 bytes of 0xab
+      owner: "0x00" + "ab".repeat(32),
+      // PackageHash: 0x01 prefix + 32 bytes of 0xcd
+      spender: "0x01" + "cd".repeat(32),
+      value: "0x000000000000000000000000000000000000000000000000000000000000002a",
+      nonce: "0x0000000000000000000000000000000000000000000000000000000000000001",
+      deadline: "0x000000000000000000000000000000000000000000000000000000006666ffff",
     },
   ),
   standardVector(

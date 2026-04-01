@@ -7,6 +7,9 @@ use casper_eip_712::prelude::*;
 use casper_eip_712::verify::recover_eth_address;
 use odra::casper_types::{account::AccountHash, bytesrepr::Bytes, U256};
 use odra::prelude::*;
+// Explicit import to resolve ambiguity: both casper_eip_712::prelude and odra::prelude export `Address`.
+// The Odra Address (with Account/Contract variants) is the one used for Casper runtime addresses.
+use odra::prelude::Address;
 use odra_modules::cep18_token::Cep18;
 
 pub const CHAIN_ID_CASPER_ASCII: u64 = 1_314_614_895;
@@ -99,8 +102,8 @@ impl PermitToken {
 
         let domain = self.build_domain(use_casper_domain);
         let permit = Permit {
-            owner: owner_eth,
-            spender: address_to_eth_bytes(&spender),
+            owner: owner_eth.into(),
+            spender: address_to_eth_bytes(&spender).into(),
             value: u256_to_bytes32(value),
             nonce: u256_to_bytes32(nonce),
             deadline: u256_to_bytes32(U256::from(deadline)),

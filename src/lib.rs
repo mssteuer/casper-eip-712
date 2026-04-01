@@ -19,8 +19,8 @@
 //!     .build();
 //!
 //! let permit = Permit {
-//!     owner: [0x22; 20],
-//!     spender: [0x33; 20],
+//!     owner: Address::Eth([0x22; 20]),
+//!     spender: Address::Eth([0x33; 20]),
 //!     value: [0u8; 32],
 //!     nonce: [0u8; 32],
 //!     deadline: [0u8; 32],

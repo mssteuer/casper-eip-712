@@ -75,8 +75,8 @@ fn casper_domain(token: &PermitTokenHostRef) -> DomainSeparator {
 
 fn build_permit(owner: [u8; 20], spender: &Address, value: U256, nonce: U256, deadline: u64) -> Permit {
     Permit {
-        owner,
-        spender: address_to_eth_bytes(spender),
+        owner: owner.into(),
+        spender: address_to_eth_bytes(spender).into(),
         value: u256_to_bytes32(value),
         nonce: u256_to_bytes32(nonce),
         deadline: u256_to_bytes32(U256::from(deadline)),
