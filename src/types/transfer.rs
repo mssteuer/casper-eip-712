@@ -1,12 +1,12 @@
 use alloc::vec::Vec;
 
-use crate::encoding::{encode_address, encode_uint256};
+use crate::encoding::{encode_address, encode_uint256, Address};
 use crate::traits::Eip712Struct;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Transfer {
-    pub from: [u8; 20],
-    pub to: [u8; 20],
+    pub from: Address,
+    pub to: Address,
     pub value: [u8; 32],
 }
 
@@ -43,20 +43,20 @@ mod tests {
 
     #[test]
     fn test_transfer_encode_data_length() {
-        let transfer = Transfer { from: [0x11; 20], to: [0x22; 20], value: [0; 32] };
+        let transfer = Transfer { from: Address::Eth([0x11; 20]), to: Address::Eth([0x22; 20]), value: [0; 32] };
         assert_eq!(transfer.encode_data().len(), 96);
     }
 
     #[test]
     fn test_transfer_hash_struct_deterministic() {
-        let transfer = Transfer { from: [0x11; 20], to: [0x22; 20], value: [0; 32] };
+        let transfer = Transfer { from: Address::Eth([0x11; 20]), to: Address::Eth([0x22; 20]), value: [0; 32] };
         assert_eq!(transfer.hash_struct(), transfer.hash_struct());
     }
 
     #[test]
     fn test_transfer_different_values_different_hash() {
-        let t1 = Transfer { from: [0x11; 20], to: [0x22; 20], value: [0; 32] };
-        let t2 = Transfer { from: [0x11; 20], to: [0x22; 20], value: [1; 32] };
+        let t1 = Transfer { from: Address::Eth([0x11; 20]), to: Address::Eth([0x22; 20]), value: [0; 32] };
+        let t2 = Transfer { from: Address::Eth([0x11; 20]), to: Address::Eth([0x22; 20]), value: [1; 32] };
         assert_ne!(t1.hash_struct(), t2.hash_struct());
     }
 }

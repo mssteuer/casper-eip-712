@@ -1,10 +1,43 @@
 use crate::keccak::keccak256;
 
-/// Encode an Ethereum address (20 bytes) as a 32-byte left-padded value.
-pub fn encode_address(addr: [u8; 20]) -> [u8; 32] {
-    let mut encoded = [0u8; 32];
-    encoded[12..32].copy_from_slice(&addr);
-    encoded
+/// Represents an address field value in an EIP-712 message.
+///
+/// - `Eth` — Ethereum-style 20-byte address, encoded as 12 zero bytes of
+///   left-padding followed by the 20 address bytes (total 32-byte slot).
+/// - `Casper` — Casper 33-byte address (1-byte type prefix followed by
+///   32-byte hash), encoded as `keccak256(all_33_bytes)` so the result
+///   fits in a 32-byte slot without ambiguity.
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum Address {
+    Eth([u8; 20]),
+    Casper([u8; 33]),
+}
+
+impl From<[u8; 20]> for Address {
+    fn from(bytes: [u8; 20]) -> Self {
+        Address::Eth(bytes)
+    }
+}
+
+impl From<[u8; 33]> for Address {
+    fn from(bytes: [u8; 33]) -> Self {
+        Address::Casper(bytes)
+    }
+}
+
+/// Encode an address value as a 32-byte EIP-712 slot.
+///
+/// - [`Address::Eth`] — left-padded: 12 zero bytes followed by the 20 address bytes.
+/// - [`Address::Casper`] — `keccak256(prefix_byte ++ hash_bytes)`.
+pub fn encode_address(addr: Address) -> [u8; 32] {
+    match addr {
+        Address::Eth(bytes) => {
+            let mut encoded = [0u8; 32];
+            encoded[12..32].copy_from_slice(&bytes);
+            encoded
+        }
+        Address::Casper(bytes) => keccak256(&bytes),
+    }
 }
 
 /// Encode a uint256 value (already 32 bytes big-endian). Identity function.
@@ -48,7 +81,46 @@ mod tests {
     #[test]
     fn test_encode_address_left_pads() {
         let addr = [0x11u8; 20];
-        let encoded = encode_address(addr);
+        let encoded = encode_address(Address::Eth(addr));
+        assert_eq!(&encoded[0..12], &[0u8; 12]);
+        assert_eq!(&encoded[12..32], &addr);
+    }
+
+    #[test]
+    fn test_encode_address_casper_account_hash() {
+        use crate::keccak::keccak256;
+        let mut raw = [0x11u8; 33];
+        raw[0] = 0x00; // AccountHash prefix
+        let encoded = encode_address(Address::Casper(raw));
+        assert_eq!(encoded, keccak256(&raw));
+    }
+
+    #[test]
+    fn test_encode_address_casper_package_hash() {
+        use crate::keccak::keccak256;
+        let mut raw = [0x11u8; 33];
+        raw[0] = 0x01; // PackageHash prefix
+        let encoded = encode_address(Address::Casper(raw));
+        assert_eq!(encoded, keccak256(&raw));
+    }
+
+    #[test]
+    fn test_encode_address_casper_account_vs_package_differ() {
+        // Prefix byte (0x00 vs 0x01) produces different keccak256 outputs
+        let mut account = [0x42u8; 33];
+        account[0] = 0x00;
+        let mut package = [0x42u8; 33];
+        package[0] = 0x01;
+        assert_ne!(
+            encode_address(Address::Casper(account)),
+            encode_address(Address::Casper(package)),
+        );
+    }
+
+    #[test]
+    fn test_encode_address_eth_via_enum_left_pads() {
+        let addr = [0x11u8; 20];
+        let encoded = encode_address(Address::Eth(addr));
         assert_eq!(&encoded[0..12], &[0u8; 12]);
         assert_eq!(&encoded[12..32], &addr);
     }

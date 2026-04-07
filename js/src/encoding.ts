@@ -4,14 +4,24 @@ import { fromHex } from "./utils.js";
 import { hashStruct } from "./hash.js";
 
 /**
- * Encode an Ethereum address (0x-prefixed 20-byte hex) as a 32-byte left-padded value.
+ * Encode an address as a 32-byte EIP-712 slot.
+ *
+ * - 20-byte (Ethereum) addresses are left-padded with 12 zero bytes.
+ * - 33-byte (Casper) addresses are encoded as keccak256 of the full 33-byte
+ *   value (1-byte type prefix + 32-byte hash). The prefix distinguishes
+ *   AccountHash (0x00) from PackageHash (0x01).
  */
 export function encodeAddress(hex: string): Uint8Array {
   const bytes = fromHex(hex);
-  if (bytes.length !== 20) throw new Error(`Address must be 20 bytes, got ${bytes.length}`);
-  const encoded = new Uint8Array(32);
-  encoded.set(bytes, 12);
-  return encoded;
+  if (bytes.length === 20) {
+    const encoded = new Uint8Array(32);
+    encoded.set(bytes, 12);
+    return encoded;
+  }
+  if (bytes.length === 33) {
+    return keccak256(bytes);
+  }
+  throw new Error(`Address must be 20 or 33 bytes, got ${bytes.length}`);
 }
 
 /**

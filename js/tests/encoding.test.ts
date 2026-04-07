@@ -8,7 +8,7 @@ import {
   encodeBytes,
   encodeBool,
 } from "../src/encoding.js";
-import { toHex } from "../src/utils.js";
+import { toHex, fromHex } from "../src/utils.js";
 import { keccak256 } from "../src/keccak.js";
 
 describe("encoding", () => {
@@ -23,6 +23,35 @@ describe("encoding", () => {
     it("handles zero address", () => {
       const encoded = encodeAddress("0x0000000000000000000000000000000000000000");
       expect(encoded).toEqual(new Uint8Array(32));
+    });
+
+    it("encodes 33-byte Casper account hash as keccak256", () => {
+      // AccountHash: 0x00 prefix + 32 bytes of 0x11
+      const hex = "0x00" + "11".repeat(32);
+      const encoded = encodeAddress(hex);
+      expect(encoded.length).toBe(32);
+      const raw = fromHex(hex);
+      expect(toHex(encoded)).toBe(toHex(keccak256(raw)));
+    });
+
+    it("encodes 33-byte Casper package hash as keccak256", () => {
+      // PackageHash: 0x01 prefix + 32 bytes of 0x11
+      const hex = "0x01" + "11".repeat(32);
+      const encoded = encodeAddress(hex);
+      expect(encoded.length).toBe(32);
+      const raw = fromHex(hex);
+      expect(toHex(encoded)).toBe(toHex(keccak256(raw)));
+    });
+
+    it("account hash and package hash with same payload produce different slots", () => {
+      const accountHash = "0x00" + "42".repeat(32);
+      const packageHash = "0x01" + "42".repeat(32);
+      expect(toHex(encodeAddress(accountHash))).not.toBe(toHex(encodeAddress(packageHash)));
+    });
+
+    it("rejects addresses that are neither 20 nor 33 bytes", () => {
+      expect(() => encodeAddress("0x" + "aa".repeat(21))).toThrow("Address must be 20 or 33 bytes");
+      expect(() => encodeAddress("0x" + "aa".repeat(32))).toThrow("Address must be 20 or 33 bytes");
     });
   });
 

@@ -1,12 +1,12 @@
 use alloc::vec::Vec;
 
-use crate::encoding::{encode_address, encode_uint256};
+use crate::encoding::{encode_address, encode_uint256, Address};
 use crate::traits::Eip712Struct;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Approval {
-    pub owner: [u8; 20],
-    pub spender: [u8; 20],
+    pub owner: Address,
+    pub spender: Address,
     pub value: [u8; 32],
 }
 
@@ -43,20 +43,20 @@ mod tests {
 
     #[test]
     fn test_approval_encode_data_length() {
-        let approval = Approval { owner: [0x11; 20], spender: [0x22; 20], value: [0; 32] };
+        let approval = Approval { owner: Address::Eth([0x11; 20]), spender: Address::Eth([0x22; 20]), value: [0; 32] };
         assert_eq!(approval.encode_data().len(), 96);
     }
 
     #[test]
     fn test_approval_hash_struct_deterministic() {
-        let approval = Approval { owner: [0x11; 20], spender: [0x22; 20], value: [0; 32] };
+        let approval = Approval { owner: Address::Eth([0x11; 20]), spender: Address::Eth([0x22; 20]), value: [0; 32] };
         assert_eq!(approval.hash_struct(), approval.hash_struct());
     }
 
     #[test]
     fn test_approval_different_values_different_hash() {
-        let a1 = Approval { owner: [0x11; 20], spender: [0x22; 20], value: [0; 32] };
-        let a2 = Approval { owner: [0x11; 20], spender: [0x22; 20], value: [1; 32] };
+        let a1 = Approval { owner: Address::Eth([0x11; 20]), spender: Address::Eth([0x22; 20]), value: [0; 32] };
+        let a2 = Approval { owner: Address::Eth([0x11; 20]), spender: Address::Eth([0x22; 20]), value: [1; 32] };
         assert_ne!(a1.hash_struct(), a2.hash_struct());
     }
 }

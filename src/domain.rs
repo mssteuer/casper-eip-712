@@ -1,7 +1,7 @@
 use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 
-use crate::encoding::{encode_address, encode_bool, encode_bytes, encode_bytes32, encode_string, encode_uint64, encode_uint256};
+use crate::encoding::{encode_address, encode_bool, encode_bytes, encode_bytes32, encode_string, encode_uint64, encode_uint256, Address};
 use crate::keccak::keccak256;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -11,7 +11,7 @@ pub enum DomainFieldValue {
     /// Encoded as an EIP-712 uint256 so smaller Rust integers match the canonical
     /// 32-byte word representation used in the domain type string and hash.
     Uint64(u64),
-    Address([u8; 20]),
+    EthAddress([u8; 20]),
     Bytes32([u8; 32]),
     Bytes(Vec<u8>),
     Bool(bool),
@@ -22,7 +22,7 @@ impl DomainFieldValue {
         match self {
             Self::String(_) => "string",
             Self::Uint256(_) | Self::Uint64(_) => "uint256",
-            Self::Address(_) => "address",
+            Self::EthAddress(_) => "address",
             Self::Bytes32(_) => "bytes32",
             Self::Bytes(_) => "bytes",
             Self::Bool(_) => "bool",
@@ -34,7 +34,7 @@ impl DomainFieldValue {
             Self::String(value) => encode_string(value),
             Self::Uint256(value) => encode_uint256(*value),
             Self::Uint64(value) => encode_uint64(*value),
-            Self::Address(value) => encode_address(*value),
+            Self::EthAddress(value) => encode_address(Address::Eth(*value)),
             Self::Bytes32(value) => encode_bytes32(*value),
             Self::Bytes(value) => encode_bytes(value),
             Self::Bool(value) => encode_bool(*value),
@@ -126,7 +126,7 @@ impl DomainBuilder {
             fields.push(("uint256", "chainId".to_string(), DomainFieldValue::Uint256(value)));
         }
         if let Some(value) = self.verifying_contract {
-            fields.push(("address", "verifyingContract".to_string(), DomainFieldValue::Address(value)));
+            fields.push(("address", "verifyingContract".to_string(), DomainFieldValue::EthAddress(value)));
         }
         if let Some(value) = self.salt {
             fields.push(("bytes32", "salt".to_string(), DomainFieldValue::Bytes32(value)));
