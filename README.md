@@ -1,6 +1,6 @@
 # casper-eip-712
 
-`casper-eip-712` is a `no_std`-compatible Rust crate for EIP-712 typed data hashing and domain separation on Casper. It provides reusable encoding helpers, domain construction, typed-struct hashing, and an optional `verify` feature for Ethereum-style secp256k1 signer recovery.
+`casper-eip-712` is a multi-language EIP-712 toolkit for Casper. This repository contains the `no_std`-compatible Rust core crate, plus companion TypeScript and Go packages that application developers can use to generate and verify EIP-712 typed data messages.
 
 ## Features
 
@@ -9,6 +9,20 @@
 - Flexible `DomainBuilder` with standard EVM fields and custom Casper-native fields
 - Prebuilt `Permit`, `Approval`, and `Transfer` structs
 - Optional `verify` feature for signer recovery and verification
+- Companion TypeScript and Go packages for application integration
+- Shared cross-language vectors to keep Rust, TypeScript, and Go outputs in sync
+
+## Packages in this repository
+
+- **Rust (`src/`)**: core `casper-eip-712` crate for hashing, domain separation, encoding helpers, and optional secp256k1 recovery.
+- **TypeScript (`js/`)**: companion package for dApps/services to generate and verify EIP-712 typed data messages.
+- **Go (`go/`)**: companion package for backend/services to hash typed data and verify EIP-712 signatures.
+
+## Choose your package
+
+- Rust crate docs: [`README.md`](./README.md)
+- TypeScript package docs: [`js/README.md`](./js/README.md)
+- Go package docs: [`go/README.md`](./go/README.md)
 
 ## Quick start
 
@@ -90,6 +104,7 @@ src/                    — Core Rust crate (no_std, EIP-712 encoding + hashing)
 js/                     — TypeScript companion package (@casper-ecosystem/casper-eip-712)
   src/                  — TypeScript source
   dist/                 — Built output (run npm run build)
+go/                     — Go companion package (typed data hashing + verification helpers)
 examples/
   permit-token/         — Demo contract: CEP-18 with permit/approve pattern
     src/                — Odra smart contract (Rust)
