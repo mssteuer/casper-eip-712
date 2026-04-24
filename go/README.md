@@ -16,8 +16,8 @@ go get github.com/casper-ecosystem/casper-eip-712/go
 import (
     "math/big"
 
-    eip712 "github.com/casper-ecosystem/casper-eip712/go"
-    "github.com/casper-ecosystem/casper-eip712/go/prebuilt"
+    eip712 "github.com/casper-ecosystem/casper-eip-712/go"
+    "github.com/casper-ecosystem/casper-eip-712/go/prebuilt"
 )
 
 chainID := big.NewInt(1)
