@@ -9,6 +9,7 @@
 - Flexible `DomainBuilder` with standard EVM fields and custom Casper-native fields
 - Prebuilt `Permit`, `Approval`, and `Transfer` structs
 - Optional `verify` feature for signer recovery and verification
+- Optional `casper-native` feature: Casper PublicKey verification + `TransferAuthorization` / `BatchTransferAuthorization` structs (v1.2.0+)
 - Companion TypeScript and Go packages for application integration
 - Shared cross-language vectors to keep Rust, TypeScript, and Go outputs in sync
 
@@ -204,6 +205,75 @@ This crate's `DomainBuilder` supports both standard EVM fields (`chainId`, `veri
 
 - default: minimal hashing/encoding support
 - `verify`: enables secp256k1 signer recovery via `k256`
+- `casper-native`: Casper Network native signer verification + authorized transfer structs (see below)
+
+## `casper-native` feature (v1.2.0+)
+
+Enable in `Cargo.toml`:
+
+```toml
+casper-eip-712 = { version = "1.2.0", features = ["casper-native"] }
+```
+
+Requires `casper-types` v7 (added automatically as a dependency when the feature is enabled).
+
+### Verify a Casper signer
+
+```rust
+#[cfg(feature = "casper-native")]
+use casper_eip_712::casper_native::verify_casper_signer;
+
+let digest: [u8; 32] = hash_typed_data(&domain, &my_struct);
+let signature_hex = "01abcd..."; // 65-byte secp256k1 or 64-byte ed25519 signature hex
+let public_key_hex = "01abcd..."; // Casper PublicKey hex (02... for secp256k1, 01... for ed25519)
+
+let is_valid: bool = verify_casper_signer(&digest, signature_hex, public_key_hex)
+    .expect("verification failed");
+```
+
+### `TransferAuthorization` (EIP-3009-style)
+
+```rust
+#[cfg(feature = "casper-native")]
+use casper_eip_712::casper_native::{TransferAuthorization, BatchTransferAuthorization};
+
+// Single authorized transfer
+let auth = TransferAuthorization {
+    from: [0x11; 20],
+    to: [0x22; 20],
+    value: [0u8; 32],
+    valid_after: [0u8; 32],
+    valid_before: [0xFFu8; 32],
+    nonce: [0xAAu8; 32],
+};
+let digest = hash_typed_data(&domain, &auth);
+
+// Multi-transfer for x402 payment flows
+let batch = BatchTransferAuthorization {
+    from: [0x11; 20],
+    transfers: vec![auth],
+    valid_after: [0u8; 32],
+    valid_before: [0xFFu8; 32],
+    nonce: [0xBBu8; 32],
+};
+```
+
+### TypeScript companion (`@casper-ecosystem/casper-eip-712` v1.2.0+)
+
+```typescript
+import { TransferAuthorization, BatchTransferAuthorization, hashTypedData } from "@casper-ecosystem/casper-eip-712";
+
+const auth: TransferAuthorization = {
+  from: "0x1111111111111111111111111111111111111111",
+  to: "0x2222222222222222222222222222222222222222",
+  value: 0n,
+  validAfter: 0n,
+  validBefore: BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+  nonce: new Uint8Array(32),
+};
+
+const digest = hashTypedData(domain, auth);
+```
 
 ## no_std
 
