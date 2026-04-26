@@ -45,6 +45,9 @@ pub mod types;
 #[cfg(feature = "verify")]
 pub mod verify;
 
+#[cfg(feature = "casper-native")]
+pub mod casper_native;
+
 pub use crate::domain::{DomainBuilder, DomainFieldValue, DomainSeparator};
 pub use crate::encoding::*;
 pub use crate::hash::hash_typed_data;

@@ -3,7 +3,7 @@ members = [".", "examples/permit-token"]
 
 [package]
 name = "casper-eip-712"
-version = "1.1.0"
+version = "1.2.0"
 edition = "2021"
 description = "EIP-712 typed data hashing and domain separation for Casper Network"
 license = "Apache-2.0"
@@ -14,10 +14,12 @@ categories = ["cryptography", "no-std"]
 [features]
 default = []
 verify = ["dep:k256"]
+casper-native = ["dep:casper-types"]
 
 [dependencies]
 sha3 = { version = "0.10", default-features = false }
 k256 = { version = "0.13", default-features = false, features = ["ecdsa"] , optional = true }
+casper-types = { version = "7", optional = true }
 
 [dev-dependencies]
 k256 = { version = "0.13", default-features = false, features = ["ecdsa"] }
