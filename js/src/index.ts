@@ -24,6 +24,11 @@ export {
   type PermitMessage,
   type ApprovalMessage,
   type TransferMessage,
+  TransferAuthorizationTypes,
+  BatchTransferAuthorizationTypes,
+  type TransferAuthorizationMessage,
+  type BatchEntryMessage,
+  type BatchTransferAuthorizationMessage,
 } from "./prebuilt/index.js";
 
 export type { EIP712Domain, CasperDomain, TypedField, TypeDefinitions, TypedDataOptions } from "./types.js";
